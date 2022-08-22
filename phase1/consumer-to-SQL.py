@@ -22,17 +22,18 @@ class XactionConsumer:
     def handleMessages(self):
         for message in self.consumer:
             message = message.value
-            print('{} received'.format(message))
-            self.ledger[message['custid']] = message
-            # add message to the transaction table in your SQL usinf SQLalchemy
+            print('{} received'.format(message))  # logs each message
+            self.ledger[message['custid']] = message  # creates a dictionary of each message that comes in
+            # add message to the transaction table in your SQL using SQLalchemy
             if message['custid'] not in self.custBalances:
                 self.custBalances[message['custid']] = 0
             if message['type'] == 'dep':
                 self.custBalances[message['custid']] += message['amt']
             else:
                 self.custBalances[message['custid']] -= message['amt']
-            print(self.custBalances)
+            print(self.custBalances)  # prints balances with each transaction
+
 
 if __name__ == "__main__":
-    c = XactionConsumer()
-    c.handleMessages()
+    c = XactionConsumer() # creates object c of type Xaction consumer
+    c.handleMessages()  # calls handle messages
